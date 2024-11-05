@@ -1,19 +1,10 @@
 <template>
-  <!-- 導航欄 -->
   <nav class="nav-container">
     <div class="logo">
-      <!-- <img src="" alt="Logo" /> -->
-      <P>MedBobi</P>
+      <!-- <img src="/" alt="Logo" /> -->
+      <p>Medbobi</p>
     </div>
     <div class="nav-items">
-      <router-link
-        v-for="(item, index) in navItems"
-        :key="index"
-        :to="item.path"
-        class="nav-item"
-      >
-        {{ item.text }}
-      </router-link>
       <div class="lang-switch">
         <span class="current-lang">繁體中文</span>
         <i class="fas fa-chevron-down"></i>
@@ -23,42 +14,86 @@
 
   <!-- 主要內容區域 -->
   <main class="main-content">
-    <!-- 頂部圖片網格 -->
-    <div class="image-grid">
-      <div class="grid-item gray"></div>
-      <div class="grid-item pink"></div>
-      <div class="grid-item yellow"></div>
-      <div class="grid-item blue"></div>
-    </div>
-
-    <!-- 關於我們區域 -->
-    <section class="about-section">
-      <h2 class="section-title">關於我們</h2>
-
-      <div class="about-grid">
-        <!-- 左側圖片 -->
-        <div class="about-image"></div>
-
-        <!-- 右側文字 -->
-        <div class="about-content">
-          <h3 class="content-title">醫護資源整合 Medbobi</h3>
-          <div class="content-line"></div>
-          <p class="content-text">與我們聯絡</p>
+    <!-- 頂部照片 -->
+    <section class="gallery-container">
+      <div class="image-row">
+        <div
+          v-for="(image, index) in galleryImages"
+          :key="index"
+          class="image-item"
+          :class="{
+            expanded: selectedIndex === index,
+            collapsed: selectedIndex !== null && selectedIndex !== index,
+          }"
+          @click="toggleImage(index)"
+        >
+          <div class="image-wrapper">
+            <img :src="image.url" :alt="image.title" class="gallery-image" />
+            <div class="image-overlay" v-show="selectedIndex === index">
+              <h3 class="image-title">{{ image.title }}</h3>
+              <p class="image-description">{{ image.description }}</p>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="about-grid">
-        <!-- 左側圖片 -->
-        <div class="about-image"></div>
-
-        <!-- 右側內容 -->
-        <div class="about-content teal">
-          <h3 class="content-title">認識我們</h3>
-          <div class="content-line"></div>
-          <p class="content-text">聯絡方式</p>
-        </div>
+      <div class="titletext">
+        <p class="bobiTitle">Medbobi</p>
+        <h1 class="h1text">
+          致力於打造全方位智慧醫療生態系統，運用創新科技整合<br />
+          醫療資源，為您提供更優質、更便捷的醫療服務體驗
+        </h1>
+        <button class="titlebutton">登入立即體驗</button>
+        <!-- @click="goToLogin" -->
       </div>
     </section>
+
+    <!-- 關於我們 -->
+    <!-- <div class="top">關於我們</div> -->
+
+    <div class="hero-section">
+      <!-- 第一部分：原有的漸層背景容器 -->
+      <!-- 漸層背景容器 -->
+      <div class="green-background-1">
+        <div class="gradient-container">
+          <!-- 左側文字區域 -->
+          <div class="text-content fade-in">
+            <div class="brand-name slide-in-left">醫護聲易通 Medbobi</div>
+            <div class="slogan">
+              "智慧對話，專業解答，
+              <br />
+              為您提供最貼心的服務"
+            </div>
+          </div>
+
+          <!-- 右側手機圖示 -->
+          <div class="phone-container">
+            <div class="phone phone-top"></div>
+            <div class="phone phone-bottom"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二部分：AI輔助診斷區塊 -->
+      <div>
+        <div class="ai-section">
+          <!-- 左側圖片 -->
+          <div class="ai-image-container slide-in-left">
+            <img src="" alt="AI診斷" class="ai-image" />
+          </div>
+          <!-- 右側內容 -->
+          <div class="ai-content slide-in-right">
+            <h2 class="ai-title">AI 輔助診斷</h2>
+            <div class="yellow-line"></div>
+            <ul class="feature-list">
+              <li class="feature-item">運用LLM協助語音診斷</li>
+              <li class="feature-item">提升診斷準確度</li>
+              <li class="feature-item">縮短就診等待時間</li>
+              <li class="feature-item">即時分析病症資料</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- 服務介紹 -->
     <section class="services-section">
@@ -123,231 +158,6 @@
           </div>
         </div>
       </div>
-
-      <!-- 1.門診紀錄 -->
-      <div class="service-process">
-        <div class="process-item yellow-bg">
-          <div class="yellow-text">
-            <h3 class="process-title">1.門診紀錄</h3>
-            <hr class="yellowLine" />
-            <p class="ulText" style="display: flex; align-items: center">
-              <span class="material-symbols-outlined" style="margin-right: 5px"
-                >schedule</span
-              >大幅縮短看診時間
-            </p>
-            <ul class="ulText">
-              <li>患者描述症狀時,AI同步記錄整理</li>
-              <li>自動生成結構化病史摘要</li>
-              <li>醫師能快速掌握病情重點</li>
-              <li>平均可節省30%診間時間</li>
-            </ul>
-            <p class="ulText" style="display: flex; align-items: center">
-              <span class="material-symbols-outlined" style="margin-right: 5px"
-                >browse_activity</span
-              >即時數據分析
-            </p>
-            <ul class="ulText">
-              <li>自動分析患者描述的症狀關聯</li>
-              <li>智能比對相似病例</li>
-              <li>協助醫師快速判斷</li>
-              <li>提供治療建議參考</li>
-            </ul>
-          </div>
-          <div class="yellowBoxImag">
-            <img
-              src="/male-doctor-with-stethoscope-and-clipboard.jpg"
-              alt="門診紀錄"
-            />
-          </div>
-        </div>
-
-        <!-- 護理紀錄 -->
-        <div class="process-item">
-          <h3 class="process-title">2.護理紀錄</h3>
-          <hr class="yellowLine" />
-          <div class="half-width">
-            <div class="gray-bg">
-              <div class="coverbox">
-                <p class="grayBox">過往病例紀錄</p>
-              </div>
-              <img
-                src="/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg"
-                alt="過往病例紀錄"
-              />
-            </div>
-            <div class="gray-bg">
-              <div class="coverbox">
-                <p class="grayBox">Medbobi 系統紀錄</p>
-              </div>
-              <img src="/bobi護理紀錄3.png" alt="系統紀錄" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 3.會議記錄 -->
-        <div class="whitebackground">
-          <!-- 左側區塊 -->
-          <div class="left-section">
-            <div class="process-title">3. 會議記錄</div>
-            <hr class="yellowLine" />
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div class="promtingtext">
-                <p class="text">
-                  擁有中英文醫療語音辨識功能
-                  <br />
-                  即時會議記錄輸出
-                </p>
-              </div>
-            </div>
-            <img src="/meeting.jpg" alt="會議圖片" class="img1" />
-          </div>
-
-          <!-- 右側區塊 -->
-          <div class="right-section-3">
-            <div class="layout-container">
-              <!-- 語音功能圖片 -->
-              <img src="/mic.png" alt="語音功能" class="feature-image" />
-              <!-- 對話內容區 -->
-              <div class="dialog-section">
-                <div class="dialog-group">
-                  <div class="conversation-title">對話內容</div>
-                  <div class="dialog-box">
-                    <p class="typing">
-                      好的，我們今天要討論的是阿茲海默症的最新治療進展。
-                      <br />王醫師提到最近在臨床試驗中，使用新型藥物 Lecanemab
-                      治療早期患者，可以延緩認知功能退化約27%。
-                      <br />李醫師補充說明，搭配生活型態的調整，效果會更好...
-                    </p>
-                  </div>
-                </div>
-                <div class="dialog-group">
-                  <div class="conversation-title">智能總結</div>
-                  <div class="dialog-box">
-                    <p class="typing">
-                      1. 研究進展：Lecanemab新藥臨床成效顯著
-                      <br />
-                      2. 治療建議：藥物治療配合生活習慣調整
-                      <br />
-                      3. 後續追蹤：需持續觀察患者反應及副作用
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4.住院摘要 -->
-        <div class="background">
-          <div>
-            <div class="content-layout">
-              <!-- 左側區域 -->
-              <div class="left-section-4">
-                <div class="process-title">4. 住院摘要</div>
-                <hr class="yellowLine" />
-                <div class="description">
-                  (1)以AI驅動的語音辨識技術，提升醫護工作效率
-                  <br />
-                  <br />
-                  (2)照護紀錄<b>即說即寫</b>，同步更新病歷系統
-                  <br />
-                  <br />
-                  (3)減少紀錄時間，從60分鐘縮短至15分鐘
-                  <br />
-                  <br />
-                  (4)自動將口述內容轉換為標準化醫療紀錄格式
-                </div>
-              </div>
-              <!-- 右側區域 -->
-              <div class="right-section-4">
-                <div class="feature-list">
-                  <div class="feature-item">即時報告記錄輸入</div>
-                  <div class="feature-item">自動完成格式化報告</div>
-                  <div class="feature-item">自動生成易讀描述報告</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5.阿茲海默症諮詢標題 -->
-        <div class="whitebackground-5">
-          <div>
-            <h2 class="process-title">5.阿茲海默症衛教</h2>
-            <hr class="yellowLine" />
-          </div>
-          <div class="question-image">
-            <img src="/Frame.png" alt="questions" />
-          </div>
-        </div>
-       
-
-        <!-- Medbobi 協助區塊 -->
-        <div class="help-section">
-          <div class="help-header">
-            <div class="lightbulb-icon">
-              <i class="fas fa-lightbulb"></i>
-            </div>
-            <div class="help-title">
-              <h3>Medbobi 幫助你</h3>
-            </div>
-          </div>
-
-          <!-- 回答區塊 -->
-          <div class="answer-container">
-            <div class="chat-box">
-              <div class="chat-header">
-                <img src="" alt="專家頭像" class="avatar" />
-                <span class="expert-name">專家回答</span>
-              </div>
-              <div class="chat-content">
-                <h4>阿茲海默症照護建議與解答：</h4>
-                <ul class="answer-list">
-                  <li>保持規律的生活作息和運動習慣</li>
-                  <li>提供安全和熟悉的環境</li>
-                  <li>保持耐心和理解的態度</li>
-                  <li>尋求專業醫療協助和支持</li>
-                  <li>參與社交活動和認知訓練</li>
-                </ul>
-                <div class="source-link">
-                  <span>專業資料來源</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 聯絡資訊 -->
-      <footer class="contact-info">
-        <div class="info-container">
-          <div class="company-info">
-            <h3>醫護資源整合 Medbobi</h3>
-            <div class="contact-details">
-              <p>電話：+886-2-2122-2234</p>
-              <p>傳真：+886-2-2122-2234</p>
-              <p>手機：+886-2-2122-2234</p>
-              <p>Email：service@medsaki.com</p>
-            </div>
-          </div>
-          <div class="address-info">
-            <h4>中興院區</h4>
-            <p>新竹市中興路240巷2弄199號</p>
-            <h4>新竹院區</h4>
-            <p>新竹市光復路二段33號1樓</p>
-          </div>
-          <div class="service-info">
-            <h4>服務內容</h4>
-            <ul>
-              <li>門診預約</li>
-              <li>看診進度</li>
-              <li>衛教諮詢</li>
-              <li>社區關懷</li>
-              <li>疾病預防管理</li>
-            </ul>
-          </div>
-        </div>
-      </footer>
     </section>
   </main>
 </template>
@@ -358,22 +168,55 @@ import { defineComponent, ref } from "vue";
 export default defineComponent({
   name: "AboutPage",
   setup() {
-    const navItems = ref([
-      { text: "首頁", path: "/" },
-      { text: "研發紀錄", path: "/research" },
-      { text: "認識我們", path: "/about" },
-      { text: "聯絡我們", path: "/contact" },
+    const selectedIndex = ref<number | null>(0);
+    const galleryImages = ref([
+      {
+        url: "/pexels-gustavo-fring-3985163.jpg",
+        title: "專業醫療團隊",
+        description: "我們的專業醫療團隊提供全方位醫療照護服務",
+      },
+      {
+        url: "/doctor-approaches-patient.jpg",
+        title: "細心照護",
+        description: "以病人為中心的貼心護理服務",
+      },
+      {
+        url: "/doctors-medical-gear.jpg",
+        title: "醫療諮詢",
+        description: "提供專業的醫療諮詢與建議",
+      },
+      {
+        url: "/hospital-room-interior.jpg",
+        title: "完整紀錄",
+        description: "詳實的醫療記錄管理系統",
+      },
     ]);
 
+    const toggleImage = (index: number) => {
+      selectedIndex.value = selectedIndex.value === index ? null : index;
+    };
+
     return {
-      navItems,
+      selectedIndex,
+      galleryImages,
+      toggleImage,
     };
   },
 });
 </script>
 
 <style scoped>
-/* 導航欄樣式 */
+.main-content {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  max-width: 1360px;
+}
+/* head */
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -418,83 +261,358 @@ export default defineComponent({
 }
 
 /* 頂部圖片網格 */
-.image-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 2rem;
+.gallery-container {
+  padding: 20px;
+  overflow: hidden;
 }
 
-.grid-item {
-  height: 200px;
-  border-radius: 8px;
+.image-row {
+  display: flex;
+  gap: 10px;
+  height: 600px;
+  width: 100%;
 }
 
-.gray {
-  background-color: #f5f5f5;
+.image-item {
+  flex: 1;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
 }
-.pink {
-  background-color: #ffcdd2;
+
+.image-wrapper {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
-.yellow {
-  background-color: #fff9c4;
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
-.blue {
-  background-color: #b3e5fc;
+
+.image-item.expanded {
+  flex: 3;
+}
+
+.image-item.collapsed {
+  flex: 0.5;
+}
+
+.image-item:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.expanded .image-overlay {
+  opacity: 1;
+}
+
+.image-title {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.image-description {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.titletext {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.h1text {
+  margin: 10px 0 20px 0;
+}
+
+.bobiTitle {
+  font-size: 40px;
+  font-weight: bold;
+  color: #166868;
+  margin: 10px 0 0 0;
+}
+
+.titlebutton {
+  border: 2px solid #166868;
+  color: #166868;
+  background-color: transparent;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 25px;
+}
+
+/* 滑鼠懸停時的效果 */
+.titlebutton:hover {
+  background-color: #166868;
+  color: white;
+}
+
+/* 按下時的效果 */
+.titlebutton:active {
+  background-color: #166868;
+  color: white;
 }
 
 /* 關於我們區域 */
-.about-section {
-  padding: 2rem;
+.green-background-1 {
+  display: flex;
+  justify-content: center;
 }
 
-.section-title {
-  font-size: 3rem;
-  margin-bottom: 2rem;
+.top {
+  font-size: 40px;
+  font-weight: bold;
+  gap: 10px;
+  padding-bottom: 10px;
 }
 
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
+.hero-section {
+  background: linear-gradient(135deg, #8cd7d7 0%, #166868 100%);
+  width: 100%;
+  min-height: 400px;
+  height: 1000px;
+  overflow: hidden;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
-.about-image {
-  background-color: #f5f5f5;
-  height: 300px;
-  border-radius: 8px;
+.gradient-container {
+  padding: 40px;
+  min-height: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 800px;
 }
 
-.about-content {
-  padding: 2rem;
-  background-color: white;
-  border-radius: 8px;
+.text-content {
+  flex: 1;
+  padding: 20px;
+  z-index: 2;
 }
 
-.about-content.teal {
-  background-color: #b2dfdb;
+.brand-name {
+  font-size: 32px;
+  font-weight: bold;
+  color: #166868;
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
 }
 
-.content-title {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
+.brand-name::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #ffe66d;
+}
+/* 添加淡入動畫 */
+.fade-in {
+  animation: fadeIn 1s ease-in forwards;
 }
 
-.content-line {
-  width: 50px;
-  height: 2px;
-  background-color: #26a69a;
-  margin: 1rem 0;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.content-text {
-  color: #666;
+/* 從左滑入動畫 */
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideInLeft 0.8s ease forwards;
+  animation-delay: 0.3s; /* 延遲執行 */
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 從右滑入動畫 */
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: slideInRight 0.8s ease forwards;
+  animation-delay: 0.6s; /* 延遲執行 */
+}
+/* 左側圖片容器 */
+.ai-image-container {
+  flex: 1;
+  max-width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.ai-image:hover {
+  transform: scale(1.02);
+}
+
+/* AI診斷區塊樣式 */
+.ai-section {
+  padding: 40px;
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1360px;
+}
+
+.ai-content {
+  width: 50%;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+}
+
+.ai-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #166868;
+  margin-bottom: 15px;
+}
+
+.yellow-line {
+  width: 60%;
+  height: 4px;
+  background-color: #ffe66d;
+  margin-bottom: 20px;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-item {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.feature-item::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: #166868;
+}
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slogan {
+  font-size: 24px;
+  color: #ffffff;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+
+.phone-container {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  margin-right: 40px;
+}
+
+.phone {
+  position: absolute;
+  width: 200px;
+  height: 380px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.phone-top {
+  right: 40px;
+  top: 0;
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+
+.phone-bottom {
+  right: 80px;
+  top: 20px;
+  transform: rotate(-15deg);
+  opacity: 0.8;
+}
+
+/* 添加互動效果 */
+.phone-container:hover .phone-top {
+  transform: rotate(0deg) translateY(-10px);
+}
+
+.phone-container:hover .phone-bottom {
+  transform: rotate(-10deg) translateY(10px);
 }
 
 /* 服務介紹樣式 */
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 200, "GRAD" 0, "opsz" 24;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: bold;
 }
 
 .services-section {
@@ -557,6 +675,7 @@ export default defineComponent({
   border-radius: 15px;
   position: relative;
   display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .doctor-image img {
@@ -571,423 +690,6 @@ export default defineComponent({
   gap: 2rem;
 }
 
-/* 1.門診紀錄 */
-.process-item {
-  width: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.process-content {
-  padding: 2rem;
-  min-height: 200px;
-  border-radius: 8px;
-}
-
-.process-title {
-  font-size: 2.25rem;
-  margin-bottom: 1rem;
-  color: rgba(22, 104, 104, 1);
-  font-weight: 800;
-}
-
-.ulText {
-  font-weight: 800;
-}
-
-.yellow-bg {
-  width: 100%;
-  height: 712px;
-  background: linear-gradient(to right, #8cd7d7, #f5f5f5);
-  min-height: 200px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 4rem;
-}
-
-.yellow-text {
-  font-size: 24px;
-}
-
-.yellowBoxImag {
-  width: 600px;
-  height: 600px;
-  overflow: hidden;
-  border-radius: 15px;
-  aspect-ratio: 1;
-}
-
-.yellowBoxImag img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.yellowLine {
-  border: none;
-  height: 5px;
-  background-color: rgba(255, 230, 109, 1);
-  width: 30rem;
-  margin-left: 0;
-  margin-top: 0;
-  margin-bottom: 2rem;
-}
-
-/* 2.護理紀錄 */
-.half-width {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.gray-bg {
-  height: 600px;
-  overflow: hidden;
-  border-radius: 15px;
-  aspect-ratio: 1;
-  position: relative;
-  display: inline-block;
-}
-
-.gray-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.grayBox {
-  z-index: 1;
-  position: absolute;
-  top: 80px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 230, 109, 0.6);
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-weight: 800;
-  font-size: 1.25rem;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-.gray-bg:hover .grayBox {
-  background-color: rgba(255, 230, 109, 1);
-}
-
-/* 3.會議紀錄 */
-.whitebackground {
-  display: flex;
-  background-color: white;
-  padding: 20px;
-  border-radius: 15px;
-}
-
-/* 左側區塊樣式 */
-.left-section-3 {
-  flex: 1;
-  max-width: 50%;
-  display: flex;
-  justify-content: center;
-}
-
-.meetingtitle {
-  width: 100%;
-  font-size: 30px;
-  font-weight: bold;
-  color: #166868;
-  border-bottom: 7px solid #ffe66d;
-  margin-bottom: 20px;
-}
-
-.text {
-  font-size: 18px;
-  width: 100%;
-  color: #000;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.img1 {
-  width: 100%;
-  height: auto;
-}
-
-/* 右側區塊樣式 */
-.right-section {
-  flex: 1;
-  max-width: 50%;
-}
-
-.layout-container {
-  background-color: #8cd7d7;
-  border-radius: 15px;
-  padding: 20px;
-  height: 480px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.voice-image-container {
-  width: 30%;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.feature-image {
-  height: 150px;
-  border-radius: 8px;
-}
-
-.dialog-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.dialog-group {
-  width: 100%;
-}
-
-.conversation-title {
-  font-size: 20px;
-  color: #166868;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.dialog-box {
-  background-color: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  overflow: hidden; /* 防止打字效果溢出 */
-}
-
-.typing {
-  width: 100%;
-  white-space: nowrap; /* 防止文字換行 */
-  overflow: hidden;
-  border-right: 1px solid transparent;
-  animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
-  font-family: Consolas, Monaco;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
-}
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes blink-caret {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: currentColor;
-  }
-}
-
-/* 4.住院摘要 */
-.background {
-  background-image: url("/hospital-room-interior.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 500px;
-  padding: 20px;
-  border-radius: 15px;
-  position: relative;
-}
-
-.content-layout {
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
-  gap: 40px;
-}
-
-.left-section-4 {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.right-section-4 {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.description {
-  font-size: 18px;
-  color: #333;
-  line-height: 1.6;
-  margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  height: 300px;
-}
-
-.feature-list {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  width: 100%;
-}
-
-.feature-item {
-  background-color: #ffb5b5;
-  padding: 15px 25px;
-  border-radius: 8px;
-  font-size: 18px;
-  color: #333;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
-}
-
-.feature-item:hover {
-  transform: translateX(10px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* 5.阿茲海默症衛教 */
-.whitebackground-5 {
-  background-color: white;
-  padding: 20px;
-  border-radius: 15px;
-  height: 2100px;
-  display: flex; 
-  flex-direction: column;
-}
-
-.question-image {
-  display: flex;
-  justify-content: center;
-}
-
-.question-image img{
-  max-width: 1000px;
-}
-
-
-
-.help-section {
-  margin-bottom: 3rem;
-}
-
-.help-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.lightbulb-icon {
-  color: #ffd700;
-  font-size: 2rem;
-}
-
-.answer-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-}
-
-.chat-box {
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  overflow: hidden;
-}
-.chat-header {
-  background-color: #00bcd4;
-  color: white;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.chat-content {
-  padding: 1.5rem;
-}
-
-.answer-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.answer-list li {
-  margin-bottom: 0.5rem;
-  padding-left: 1.5rem;
-  position: relative;
-}
-
-.answer-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #00bcd4;
-}
-
-.source-link {
-  margin-top: 1.5rem;
-  text-align: right;
-  color: #00bcd4;
-  cursor: pointer;
-}
-.contact-info {
-  background-color: #26a69a;
-  color: white;
-  padding: 3rem 2rem;
-}
-.info-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.contact-details p {
-  margin: 0.5rem 0;
-}
-.info-container {
-  grid-template-columns: 1fr;
-  text-align: center;
-}
-.contact-info {
-  padding: 2rem 1rem;
-}
-
 /* 響應式設計 */
 @media (max-width: 768px) {
   .doctor-grid {
@@ -997,64 +699,62 @@ export default defineComponent({
     width: 300px;
   }
 
-  .yellowBoxImag {
-    width: 500px;
-    height: 500px;
+  /* 頂部 */
+  .image-row {
+    height: 300px;
   }
 
-  .yellow-bg {
+  .image-title {
+    font-size: 1.2rem;
+  }
+
+  .image-description {
+    font-size: 0.9rem;
+  }
+
+  .image-item.expanded {
+    flex: 2;
+  }
+
+  /* 關於我們 */
+  .gradient-container {
     flex-direction: column;
-    height: 1000px;
+    text-align: center;
+    padding: 20px;
   }
 
-  .half-width {
-    grid-template-columns: 1fr;
+  .text-content {
+    padding: 20px 0;
   }
 
-  .process-group {
-    grid-template-columns: 1fr;
+  .brand-name {
+    font-size: 28px;
   }
 
-  .process-images {
-    grid-template-columns: 1fr;
+  .brand-name::after {
+    left: 20%;
+    width: 60%;
   }
 
-  .content-layout {
-    flex-direction: column;
+  .slogan {
+    font-size: 20px;
   }
 
-  .left-section,
-  .right-section {
-    width: 100%;
-    padding: 10px;
+  .phone-container {
+    margin: 40px auto;
+    width: 250px;
+    height: 300px;
   }
 
-  .title {
-    font-size: 24px;
-  }
-
-  .feature-item {
-    font-size: 16px;
-    padding: 12px 20px;
-  }
-
-  .greenbackground {
-    flex-direction: column;
-  }
-
-  .left-section-4,
-  .right-section-4 {
-    max-width: 100%;
+  .phone {
+    width: 160px;
+    height: 300px;
   }
 }
 
 @media (max-width: 480px) {
   .doctor-grid {
     grid-template-columns: 1fr;
-  }
-  .yellowBoxImag {
-    width: 100px;
-    height: 100px;
   }
 }
 </style>
