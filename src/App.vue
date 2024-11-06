@@ -38,6 +38,7 @@
       </div>
       <div class="titletext">
         <p class="bobiTitle">Medbobi</p>
+        <div class="yellow-line-1"></div>
         <h1 class="h1text">
           致力於打造全方位智慧醫療生態系統，運用創新科技整合<br />
           醫療資源，為您提供更優質、更便捷的醫療服務體驗
@@ -50,40 +51,52 @@
     <!-- 關於我們 -->
     <!-- <div class="top">關於我們</div> -->
 
+    <!-- 第一部分：原有的漸層背景容器 -->
+    <!-- 漸層背景容器 -->
     <div class="hero-section">
-      <!-- 第一部分：原有的漸層背景容器 -->
-      <!-- 漸層背景容器 -->
-      <div class="green-background-1">
-        <div class="gradient-container">
-          <!-- 左側文字區域 -->
-          <div class="text-content fade-in">
-            <div class="brand-name slide-in-left">醫護聲易通 Medbobi</div>
-            <div class="slogan">
-              "智慧對話，專業解答，
-              <br />
-              為您提供最貼心的服務"
-            </div>
-          </div>
-
-          <!-- 右側手機圖示 -->
-          <div class="phone-container">
-            <div class="phone phone-top"></div>
-            <div class="phone phone-bottom"></div>
+      <div class="gradient-container">
+        <!-- 左側文字區域 -->
+        <div
+          ref="fadeInElement"
+          :class="{ 'fade-in': fadeInAnimated }"
+          class="text-content element"
+        >
+          <div class="brand-name slide-in-left">醫護聲易通 Medbobi</div>
+          <div class="slogan">
+            "智慧對話，專業解答，
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;為您提供最貼心的服務"
           </div>
         </div>
-      </div>
 
-      <!-- 第二部分：AI輔助診斷區塊 -->
-      <div>
-        <div class="ai-section">
-          <!-- 左側圖片 -->
-          <div class="ai-image-container slide-in-left">
-            <img src="" alt="AI診斷" class="ai-image" />
-          </div>
-          <!-- 右側內容 -->
-          <div class="ai-content slide-in-right">
+        <!-- 右側手機圖示 -->
+        <div class="phone-container">
+          <div class="phone phone-top"></div>
+          <div class="phone phone-bottom"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二部分：AI輔助診斷區塊 -->
+    <div>
+      <div class="ai-section">
+        <!-- 左側圖片 -->
+        <div
+          ref="slideInLeftElement"
+          :class="{ 'slide-in-left': slideInLeftAnimated }"
+          class="ai-image-container element"
+        >
+          <img src="/Macbook Air.png" alt="AI診斷" class="ai-image" />
+        </div>
+        <!-- 右側內容 -->
+        <div
+          ref="slideInRightElement"
+          :class="{ 'slide-in-right': slideInRightAnimated }"
+          class="ai-content element"
+        >
+          <div class="ai-text">
             <h2 class="ai-title">AI 輔助診斷</h2>
-            <div class="yellow-line"></div>
+            <div class="yellow-line-2"></div>
             <ul class="feature-list">
               <li class="feature-item">運用LLM協助語音診斷</li>
               <li class="feature-item">提升診斷準確度</li>
@@ -101,7 +114,7 @@
 
       <!-- 服務照片網格 -->
       <div class="doctor-grid">
-        <div class="doctor-image">
+        <div class="doctor-image" @click="goToPage">
           <img
             src="/male-doctor-with-stethoscope-and-clipboard.jpg"
             alt="門診紀錄"
@@ -112,7 +125,7 @@
             <span class="iconTitle">門診紀錄</span>
           </div>
         </div>
-        <div class="doctor-image">
+        <div class="doctor-image" @click="goToPage">
           <img
             src="/female-medical-professional-holds-clipboard-in-hospital-room.jpg"
             alt="護理紀錄"
@@ -125,7 +138,7 @@
             <span class="iconTitle">護理紀錄</span>
           </div>
         </div>
-        <div class="doctor-image">
+        <div class="doctor-image" @click="goToPage">
           <img src="/team-taking-meeting-notes.jpg" alt="會議紀錄" />
           <div class="overlay">
             <span class="material-symbols-outlined icon">clinical_notes</span>
@@ -133,7 +146,7 @@
             <span class="iconTitle">會議紀錄</span>
           </div>
         </div>
-        <div class="doctor-image">
+        <div class="doctor-image" @click="goToPage">
           <img src="/doctor-approaches-patient.jpg" alt="住院摘要" />
           <div class="overlay">
             <span class="material-symbols-outlined icon">home_health</span>
@@ -141,7 +154,7 @@
             <span class="iconTitle">住院摘要</span>
           </div>
         </div>
-        <div class="doctor-image">
+        <div class="doctor-image" @click="goToPage">
           <img src="/nurse-helping-patient.jpg" alt="衛教諮詢" />
           <div class="overlay">
             <span class="material-symbols-outlined icon">vaccines</span>
@@ -149,7 +162,7 @@
             <span class="iconTitle">衛教諮詢</span>
           </div>
         </div>
-        <div class="doctor-image">
+        <div class="doctor-image" @click="goToPage">
           <img src="/medical-doctors-desk.jpg" alt="其他服務" />
           <div class="overlay">
             <span class="material-symbols-outlined icon">info</span>
@@ -163,11 +176,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { ref, defineComponent, onMounted } from "vue";
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  name: "AboutPage",
+  name: "HomePage",
   setup() {
+    // 控制動畫的狀態
+    const fadeInAnimated = ref(false);
+    const slideInLeftAnimated = ref(false);
+    const slideInRightAnimated = ref(false);
+
+    const router = useRouter();
+
+    // 跳轉到指定頁面
+    const goToPage = () => {
+      router.push('/service'); // 使用路徑名稱而非檔案名稱
+    };
+
+    // 圖片和相關信息
     const selectedIndex = ref<number | null>(0);
     const galleryImages = ref([
       {
@@ -192,20 +219,63 @@ export default defineComponent({
       },
     ]);
 
+    // 切換圖片的方法
     const toggleImage = (index: number) => {
       selectedIndex.value = selectedIndex.value === index ? null : index;
     };
+
+    // 元素參考
+    const fadeInElement = ref<HTMLElement | null>(null);
+    const slideInLeftElement = ref<HTMLElement | null>(null);
+    const slideInRightElement = ref<HTMLElement | null>(null);
+
+    // 動畫的 Intersection Observer
+    onMounted(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === fadeInElement.value) {
+              fadeInAnimated.value = true;
+            } else if (entry.target === slideInLeftElement.value) {
+              slideInLeftAnimated.value = true;
+            } else if (entry.target === slideInRightElement.value) {
+              slideInRightAnimated.value = true;
+            }
+            // 停止觀察該元素
+            observer.unobserve(entry.target);
+          }
+        });
+      });
+
+      // 觀察元素
+      if (fadeInElement.value) observer.observe(fadeInElement.value);
+      if (slideInLeftElement.value) observer.observe(slideInLeftElement.value);
+      if (slideInRightElement.value) observer.observe(slideInRightElement.value);
+    });
 
     return {
       selectedIndex,
       galleryImages,
       toggleImage,
+      fadeInAnimated,
+      slideInLeftAnimated,
+      slideInRightAnimated,
+      fadeInElement,
+      slideInLeftElement,
+      slideInRightElement,
+      goToPage, // 返回 goToPage 函數
     };
   },
 });
 </script>
 
+
 <style scoped>
+.element {
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
 .main-content {
   background-color: white;
   display: flex;
@@ -343,14 +413,14 @@ export default defineComponent({
 }
 
 .h1text {
-  margin: 10px 0 20px 0;
+  margin: 10px 0 10px 0;
 }
 
 .bobiTitle {
   font-size: 40px;
   font-weight: bold;
   color: #166868;
-  margin: 10px 0 0 0;
+  margin: 10px 0;
 }
 
 .titlebutton {
@@ -363,21 +433,29 @@ export default defineComponent({
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 滑鼠懸停時的效果 */
 .titlebutton:hover {
   background-color: #166868;
   color: white;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* 按下時的效果 */
 .titlebutton:active {
   background-color: #166868;
   color: white;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* 關於我們區域 */
+.greensection {
+  display: flex;
+  justify-content: center;
+}
+
 .green-background-1 {
   display: flex;
   justify-content: center;
@@ -394,11 +472,12 @@ export default defineComponent({
   background: linear-gradient(135deg, #8cd7d7 0%, #166868 100%);
   width: 100%;
   min-height: 400px;
-  height: 1000px;
+  height: 500px;
   overflow: hidden;
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -425,6 +504,7 @@ export default defineComponent({
   margin-bottom: 15px;
   position: relative;
   display: inline-block;
+  text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.4);
 }
 
 .brand-name::after {
@@ -489,7 +569,6 @@ export default defineComponent({
   width: 100%;
   height: auto;
   border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -498,31 +577,52 @@ export default defineComponent({
 }
 
 /* AI診斷區塊樣式 */
+.ai-text {
+  margin-left: 0px;
+}
+
 .ai-section {
   padding: 40px;
   position: relative;
-  min-height: 300px;
+  min-height: 500px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   max-width: 1360px;
+  margin-bottom: 20px;
 }
 
 .ai-content {
-  width: 50%;
+  width: 350px;
+  height: 250px;
   padding: 30px;
-  background-color: rgba(255, 255, 255, 0.8);
+  /* background-color: #8CD7D7; */
+  background: linear-gradient(135deg, #8cd7d7 0%, #166868 100%);
   border-radius: 10px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 180px;
+  margin-left: 30px;
 }
 
 .ai-title {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
   color: #166868;
   margin-bottom: 15px;
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.4);
 }
 
-.yellow-line {
-  width: 60%;
+.yellow-line-1 {
+  width: 600px;
+  height: 4px;
+  background-color: #ffe66d;
+}
+.yellow-line-2 {
+  width: 300px;
   height: 4px;
   background-color: #ffe66d;
   margin-bottom: 20px;
@@ -534,8 +634,8 @@ export default defineComponent({
 }
 
 .feature-item {
-  font-size: 18px;
-  color: #333;
+  font-size: 20px;
+  color: white;
   margin-bottom: 15px;
   padding-left: 20px;
   position: relative;
@@ -545,7 +645,7 @@ export default defineComponent({
   content: "-";
   position: absolute;
   left: 0;
-  color: #166868;
+  color: white;
 }
 @keyframes slideInRight {
   from {
@@ -613,11 +713,15 @@ export default defineComponent({
 .section-title {
   font-size: 2.25rem;
   font-weight: bold;
+  text-align: center;
+  color: #166868;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .services-section {
-  padding: 2rem;
   background-color: #f5f5f5;
+  width: 100%;
+  padding-bottom: 50px;
 }
 
 .doctor-grid {
@@ -659,13 +763,20 @@ export default defineComponent({
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.doctor-image:hover {
+  box-shadow: 0px 0px 9.5px 5px rgba(0, 0, 0, 0.3);
+}
+
 .icon {
   margin-right: 5px; /* 圖標與文字之間的距離 */
   font-size: 50px; /* 調整圖標大小 */
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .iconTitle {
   font-size: 24px;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
 }
 
 .doctor-image {
@@ -675,7 +786,7 @@ export default defineComponent({
   border-radius: 15px;
   position: relative;
   display: inline-block;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.15);
 }
 
 .doctor-image img {

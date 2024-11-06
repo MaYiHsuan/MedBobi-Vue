@@ -8,7 +8,7 @@
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "types": ["vue"]
+    "types": ["vue", "vue-router"]  // 加入 vue-router
   },
   "vueCompilerOptions": {
     "target": 3.5
