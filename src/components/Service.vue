@@ -164,16 +164,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "ServicePage",
+<script>
+export default {
+  name: "Service",
   setup() {
     // 在此處進行頁面加載或數據操作等
     return {};
   },
-});
+};
 </script>
 
 <style scoped>

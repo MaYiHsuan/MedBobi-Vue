@@ -1,200 +1,205 @@
 <template>
-  <nav class="nav-container">
-    <div class="logo">
-      <!-- <img src="/" alt="Logo" /> -->
-      <p>Medbobi</p>
-    </div>
-    <div class="nav-items">
-      <div class="lang-switch">
-        <span class="current-lang">繁體中文</span>
-        <i class="fas fa-chevron-down"></i>
-      </div>
-    </div>
-  </nav>
+  <div class="sticky-footer">
+    <HeaderComp></HeaderComp>
+    <main class="main-content">
+      <section class="gallery-container">
+        <div class="image-row">
+          <div
+            v-for="(image, index) in galleryImages"
+            :key="index"
+            class="image-item"
+            :class="{
+              expanded: selectedIndex === index,
+              collapsed: selectedIndex !== null && selectedIndex !== index,
+            }"
+            @click="toggleImage(index)"
+          >
+            <div class="image-wrapper">
+              <img :src="image.url" :alt="image.title" class="gallery-image" />
+              <div class="image-overlay" v-show="selectedIndex === index">
+                <h3 class="image-title">{{ image.title }}</h3>
+                <p class="image-description">{{ image.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="titletext">
+          <p class="bobiTitle">Medbobi</p>
+          <div class="yellow-line-1"></div>
+          <h1 class="h1text">
+            致力於打造全方位智慧醫療生態系統，運用創新科技整合<br />
+            醫療資源，為您提供更優質、更便捷的醫療服務體驗
+          </h1>
+          <button class="titlebutton" @click="showLoginModal">
+            登入立即體驗
+          </button>
+        </div>
+        <LoginView
+          v-if="isLoginModalVisible"
+          @close="hideLoginModal"
+          @login-success="handleLoginSuccess"
+        />
+      </section>
 
-  <!-- 主要內容區域 -->
-  <main class="main-content">
-    <!-- 頂部照片 -->
-    <section class="gallery-container">
-      <div class="image-row">
-        <div
-          v-for="(image, index) in galleryImages"
-          :key="index"
-          class="image-item"
-          :class="{
-            expanded: selectedIndex === index,
-            collapsed: selectedIndex !== null && selectedIndex !== index,
-          }"
-          @click="toggleImage(index)"
-        >
-          <div class="image-wrapper">
-            <img :src="image.url" :alt="image.title" class="gallery-image" />
-            <div class="image-overlay" v-show="selectedIndex === index">
-              <h3 class="image-title">{{ image.title }}</h3>
-              <p class="image-description">{{ image.description }}</p>
+      <div class="hero-section">
+        <div class="gradient-container">
+          <div
+            ref="fadeInElement"
+            :class="{ 'fade-in': fadeInAnimated }"
+            class="text-content element"
+          >
+            <div class="brand-name slide-in-left">醫護聲易通 Medbobi</div>
+            <div class="slogan">
+              "智慧對話，專業解答，
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;為您提供最貼心的服務"
+            </div>
+          </div>
+          <div class="phone-container">
+            <div class="phone phone-top"></div>
+            <div class="phone phone-bottom"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blue-container">
+        <div class="ai-section">
+          <div
+            ref="slideInLeftElement"
+            :class="{ 'slide-in-left': slideInLeftAnimated }"
+            class="ai-image-container element"
+          >
+            <img src="/Macbook Air.png" alt="AI診斷" class="ai-image" />
+          </div>
+          <div
+            ref="slideInRightElement"
+            :class="{ 'slide-in-right': slideInRightAnimated }"
+            class="ai-content element"
+          >
+            <div class="ai-text">
+              <h2 class="ai-title">AI 輔助診斷</h2>
+              <div class="yellow-line-2"></div>
+              <ul class="feature-list">
+                <li class="feature-item">運用LLM協助語音診斷</li>
+                <li class="feature-item">提升診斷準確度</li>
+                <li class="feature-item">縮短就診等待時間</li>
+                <li class="feature-item">即時分析病症資料</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-      <div class="titletext">
-        <p class="bobiTitle">Medbobi</p>
-        <div class="yellow-line-1"></div>
-        <h1 class="h1text">
-          致力於打造全方位智慧醫療生態系統，運用創新科技整合<br />
-          醫療資源，為您提供更優質、更便捷的醫療服務體驗
-        </h1>
-        <button class="titlebutton">登入立即體驗</button>
-        <!-- @click="goToLogin" -->
-      </div>
-    </section>
 
-    <!-- 關於我們 -->
-    <!-- <div class="top">關於我們</div> -->
+      <section class="services-section">
+        <h2 class="section-title">服務介紹</h2>
+        <div class="doctor-grid">
+          <div class="doctor-image" @click="navigateToService">
+            <img
+              src="/male-doctor-with-stethoscope-and-clipboard.jpg"
+              alt="門診紀錄"
+            />
+            <div class="overlay">
+              <span class="material-symbols-outlined icon">stethoscope</span>
+              <span class="iconTitle">門診紀錄</span>
+            </div>
+          </div>
+          <div class="doctor-image" @click="navigateToService">
+            <img
+              src="/female-medical-professional-holds-clipboard-in-hospital-room.jpg"
+              alt="護理紀錄"
+            />
+            <div class="overlay">
+              <span class="material-symbols-outlined icon"
+                >medication_liquid</span
+              >
+              <span class="iconTitle">護理紀錄</span>
+            </div>
+          </div>
+          <div class="doctor-image" @click="navigateToService">
+            <img src="/team-taking-meeting-notes.jpg" alt="會議紀錄" />
+            <div class="overlay">
+              <span class="material-symbols-outlined icon">clinical_notes</span>
+              <span class="iconTitle">會議紀錄</span>
+            </div>
+          </div>
+          <div class="doctor-image" @click="navigateToService">
+            <img src="/doctor-approaches-patient.jpg" alt="住院摘要" />
+            <div class="overlay">
+              <span class="material-symbols-outlined icon">home_health</span>
+              <span class="iconTitle">住院摘要</span>
+            </div>
+          </div>
+          <div class="doctor-image" @click="navigateToService">
+            <img src="/nurse-helping-patient.jpg" alt="衛教諮詢" />
+            <div class="overlay">
+              <span class="material-symbols-outlined icon">vaccines</span>
+              <span class="iconTitle">衛教諮詢</span>
+            </div>
+          </div>
+          <div class="doctor-image" @click="navigateToService">
+            <img src="/medical-doctors-desk.jpg" alt="其他服務" />
+            <div class="overlay">
+              <span class="material-symbols-outlined icon">info</span>
+              <span class="iconTitle">其他服務</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <!-- 第一部分：原有的漸層背景容器 -->
-    <!-- 漸層背景容器 -->
-    <div class="hero-section">
-      <div class="gradient-container">
-        <!-- 左側文字區域 -->
-        <div
-          ref="fadeInElement"
-          :class="{ 'fade-in': fadeInAnimated }"
-          class="text-content element"
-        >
-          <div class="brand-name slide-in-left">醫護聲易通 Medbobi</div>
-          <div class="slogan">
-            "智慧對話，專業解答，
-            <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;為您提供最貼心的服務"
-          </div>
-        </div>
-
-        <!-- 右側手機圖示 -->
-        <div class="phone-container">
-          <div class="phone phone-top"></div>
-          <div class="phone phone-bottom"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 第二部分：AI輔助診斷區塊 -->
-    <div>
-      <div class="ai-section">
-        <!-- 左側圖片 -->
-        <div
-          ref="slideInLeftElement"
-          :class="{ 'slide-in-left': slideInLeftAnimated }"
-          class="ai-image-container element"
-        >
-          <img src="/Macbook Air.png" alt="AI診斷" class="ai-image" />
-        </div>
-        <!-- 右側內容 -->
-        <div
-          ref="slideInRightElement"
-          :class="{ 'slide-in-right': slideInRightAnimated }"
-          class="ai-content element"
-        >
-          <div class="ai-text">
-            <h2 class="ai-title">AI 輔助診斷</h2>
-            <div class="yellow-line-2"></div>
-            <ul class="feature-list">
-              <li class="feature-item">運用LLM協助語音診斷</li>
-              <li class="feature-item">提升診斷準確度</li>
-              <li class="feature-item">縮短就診等待時間</li>
-              <li class="feature-item">即時分析病症資料</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 服務介紹 -->
-    <section class="services-section">
-      <h2 class="section-title">服務介紹</h2>
-
-      <!-- 服務照片網格 -->
-      <div class="doctor-grid">
-        <div class="doctor-image" @click="goToPage">
-          <img
-            src="/male-doctor-with-stethoscope-and-clipboard.jpg"
-            alt="門診紀錄"
-          />
-          <div class="overlay">
-            <span class="material-symbols-outlined icon">stethoscope</span>
-            <!-- 使用正確的圖標名稱 -->
-            <span class="iconTitle">門診紀錄</span>
-          </div>
-        </div>
-        <div class="doctor-image" @click="goToPage">
-          <img
-            src="/female-medical-professional-holds-clipboard-in-hospital-room.jpg"
-            alt="護理紀錄"
-          />
-          <div class="overlay">
-            <span class="material-symbols-outlined icon"
-              >medication_liquid</span
-            >
-            <!-- 使用正確的圖標名稱 -->
-            <span class="iconTitle">護理紀錄</span>
-          </div>
-        </div>
-        <div class="doctor-image" @click="goToPage">
-          <img src="/team-taking-meeting-notes.jpg" alt="會議紀錄" />
-          <div class="overlay">
-            <span class="material-symbols-outlined icon">clinical_notes</span>
-            <!-- 使用正確的圖標名稱 -->
-            <span class="iconTitle">會議紀錄</span>
-          </div>
-        </div>
-        <div class="doctor-image" @click="goToPage">
-          <img src="/doctor-approaches-patient.jpg" alt="住院摘要" />
-          <div class="overlay">
-            <span class="material-symbols-outlined icon">home_health</span>
-            <!-- 使用正確的圖標名稱 -->
-            <span class="iconTitle">住院摘要</span>
-          </div>
-        </div>
-        <div class="doctor-image" @click="goToPage">
-          <img src="/nurse-helping-patient.jpg" alt="衛教諮詢" />
-          <div class="overlay">
-            <span class="material-symbols-outlined icon">vaccines</span>
-            <!-- 使用正確的圖標名稱 -->
-            <span class="iconTitle">衛教諮詢</span>
-          </div>
-        </div>
-        <div class="doctor-image" @click="goToPage">
-          <img src="/medical-doctors-desk.jpg" alt="其他服務" />
-          <div class="overlay">
-            <span class="material-symbols-outlined icon">info</span>
-            <!-- 使用正確的圖標名稱 -->
-            <span class="iconTitle">其他服務</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+      <LoginView
+        v-if="isLoginModalVisible"
+        @close="hideLoginModal"
+        @login-success="handleLoginSuccess"
+      />
+    </main>
+    <FooterComp class="sticky-bottom"></FooterComp>
+  </div>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent, onMounted } from "vue";
-import { useRouter } from 'vue-router';
+import  HeaderComp  from './components/Header.vue';
+import  FooterComp  from './components/Footer.vue';
+import  LoginView  from './components/Login.vue';
+import { useRouter } from "vue-router";
+import Service from '@/components/Service.vue';
 
 export default defineComponent({
   name: "HomePage",
+  components: {
+    HeaderComp,FooterComp,LoginView,Service,
+  },
   setup() {
+     // 登入模態框的狀態
+     const isLoginModalVisible = ref(false);
+     // 登入相關方法
+     const showLoginModal = () => {
+      isLoginModalVisible.value = true;
+      document.body.style.overflow = 'hidden';
+    };
+
+    const hideLoginModal = () => {
+      isLoginModalVisible.value = false;
+      document.body.style.overflow = 'auto';
+    };
+
+    const handleLoginSuccess = (userData: any) => {
+      console.log('Login successful:', userData);
+      hideLoginModal();
+      // 可以添加其他登入成功後的邏輯
+    };
     // 控制動畫的狀態
     const fadeInAnimated = ref(false);
     const slideInLeftAnimated = ref(false);
     const slideInRightAnimated = ref(false);
 
+    // 跳轉頁面
     const router = useRouter();
 
-    // 跳轉到指定頁面
-    const goToPage = () => {
-      router.push('/service'); // 使用路徑名稱而非檔案名稱
+    const navigateToService = () => {
+      router.push('/service');
     };
 
-    // 圖片和相關信息
     const selectedIndex = ref<number | null>(0);
     const galleryImages = ref([
       {
@@ -219,17 +224,14 @@ export default defineComponent({
       },
     ]);
 
-    // 切換圖片的方法
     const toggleImage = (index: number) => {
       selectedIndex.value = selectedIndex.value === index ? null : index;
     };
 
-    // 元素參考
     const fadeInElement = ref<HTMLElement | null>(null);
     const slideInLeftElement = ref<HTMLElement | null>(null);
     const slideInRightElement = ref<HTMLElement | null>(null);
 
-    // 動畫的 Intersection Observer
     onMounted(() => {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -241,19 +243,22 @@ export default defineComponent({
             } else if (entry.target === slideInRightElement.value) {
               slideInRightAnimated.value = true;
             }
-            // 停止觀察該元素
             observer.unobserve(entry.target);
           }
         });
       });
 
-      // 觀察元素
       if (fadeInElement.value) observer.observe(fadeInElement.value);
       if (slideInLeftElement.value) observer.observe(slideInLeftElement.value);
       if (slideInRightElement.value) observer.observe(slideInRightElement.value);
     });
 
+
     return {
+      isLoginModalVisible,
+      showLoginModal,
+      hideLoginModal,
+      handleLoginSuccess,
       selectedIndex,
       galleryImages,
       toggleImage,
@@ -263,14 +268,36 @@ export default defineComponent({
       fadeInElement,
       slideInLeftElement,
       slideInRightElement,
-      goToPage, // 返回 goToPage 函數
+      navigateToService,
     };
+
   },
 });
 </script>
 
-
 <style scoped>
+.body {
+  margin: 0;
+  padding: 0;
+}
+/* head */
+.spaces {
+  margin: 0;
+  padding: 0;
+}
+.sticky-footer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.sticky-bottom {
+  margin-top: auto;
+}
+
+/* 內容 */
 .element {
   opacity: 0;
   transition: all 0.5s ease;
@@ -337,6 +364,7 @@ export default defineComponent({
 }
 
 .image-row {
+  margin-top: 70px;
   display: flex;
   gap: 10px;
   height: 600px;
@@ -414,6 +442,8 @@ export default defineComponent({
 
 .h1text {
   margin: 10px 0 10px 0;
+  color: #166868;
+  font-weight: bold;
 }
 
 .bobiTitle {
@@ -581,6 +611,14 @@ export default defineComponent({
   margin-left: 0px;
 }
 
+.blue-container {
+  background-color: #eafcfc;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
 .ai-section {
   padding: 40px;
   position: relative;
@@ -593,7 +631,7 @@ export default defineComponent({
 
 .ai-content {
   width: 350px;
-  height: 250px;
+  height: 300px;
   padding: 30px;
   /* background-color: #8CD7D7; */
   background: linear-gradient(135deg, #8cd7d7 0%, #166868 100%);
@@ -611,7 +649,7 @@ export default defineComponent({
   font-size: 32px;
   font-weight: bold;
   color: #166868;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   text-align: center;
   text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.4);
 }
@@ -715,11 +753,11 @@ export default defineComponent({
   font-weight: bold;
   text-align: center;
   color: #166868;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
 }
 
 .services-section {
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   width: 100%;
   padding-bottom: 50px;
 }
@@ -729,7 +767,6 @@ export default defineComponent({
   grid-template-columns: repeat(3, 1fr); /* 使用三列的網格 */
   gap: 1.5rem;
   max-width: 1200px; /* 可根據需要調整最大寬度 */
-  width: 100%;
   justify-self: center;
 }
 
@@ -780,7 +817,7 @@ export default defineComponent({
 }
 
 .doctor-image {
-  width: 400px;
+  width: 380px;
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 15px;
